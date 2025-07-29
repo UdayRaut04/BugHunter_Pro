@@ -1,0 +1,10 @@
+﻿# requirements.txt for advanced-bug-bounty-analyzer
+# Only required for running a local HTTP server or additional backend features
+
+# For simple static serving (local web server only):
+# Python 3.x is required (builtin http.server module is enough)
+
+# Example: Uncomment below if you ever add backend logic (Flask, Django, etc.)
+
+# flask==3.0.2
+# requests==2.31.0

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugHunter Pro - Advanced Bug Bounty Platform</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-bug"></i>
+                    <span>BugHunter Pro</span>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Active Scans</span>
+                        <span class="stat-value" id="activeScanCount">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Vulnerabilities</span>
+                        <span class="stat-value" id="vulnCount">0</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <button class="nav-btn active" data-tab="dashboard">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </button>
+            <button class="nav-btn" data-tab="reconnaissance">
+                <i class="fas fa-search"></i>
+                Reconnaissance
+            </button>
+            <button class="nav-btn" data-tab="scanner">
+                <i class="fas fa-shield-alt"></i>
+                Vulnerability Scanner
+            </button>
+            <button class="nav-btn" data-tab="analysis">
+                <i class="fas fa-microscope"></i>
+                Deep Analysis
+            </button>
+            <button class="nav-btn" data-tab="reports">
+                <i class="fas fa-file-alt"></i>
+                Reports
+            </button>
+            <button class="nav-btn" data-tab="methodology">
+                <i class="fas fa-clipboard-list"></i>
+                Methodology
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="app-main">
+            <!-- Dashboard Tab -->
+            <div class="tab-content active" id="dashboard">
+                <div class="dashboard-grid">
+                    <div class="card target-setup">
+                        <div class="card-header">
+                            <h3><i class="fas fa-crosshairs"></i> Target Setup</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class="form-label">Target URL/Domain</label>
+                                <input type="text" class="form-control" id="targetUrl" placeholder="https://example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Scope Definition</label>
+                                <textarea class="form-control" id="scopeDefinition" rows="3" placeholder="*.example.com&#10;api.example.com&#10;!admin.example.com"></textarea>
+                            </div>
+                            <button class="btn btn--primary" id="startAnalysis">
+                                <i class="fas fa-play"></i> Start Analysis
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card target-info">
+                        <div class="card-header">
+                            <h3><i class="fas fa-info-circle"></i> Target Information</h3>
+                        </div>
+                        <div class="card-body" id="targetInfo">
+                            <div class="no-target">
+                                <i class="fas fa-bullseye"></i>
+                                <p>Enter a target URL to begin analysis</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card recent-scans">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Recent Scans</h3>
+                        </div>
+                        <div class="card-body" id="recentScans">
+                            <div class="scan-item">
+                                <div class="scan-info">
+                                    <div class="scan-target">example.com</div>
+                                    <div class="scan-date">2 hours ago</div>
+                                </div>
+                                <div class="scan-status status--success">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card methodology-progress">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tasks"></i> Methodology Progress</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="progress-item">
+                                <span>Reconnaissance</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 80%"></div>
+                                </div>
+                                <span>80%</span>
+                            </div>
+                            <div class="progress-item">
+                                <span>Vulnerability Analysis</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%"></div>
+                                </div>
+                                <span>45%</span>
+                            </div>
+                            <div class="progress-item">
+                                <span>Exploitation</span>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <span>0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reconnaissance Tab -->
+            <div class="tab-content" id="reconnaissance">
+                <div class="recon-header">
+                    <h2><i class="fas fa-search"></i> Reconnaissance Module</h2>
+                    <button class="btn btn--primary" id="startRecon">
+                        <i class="fas fa-play"></i> Start Reconnaissance
+                    </button>
+                </div>
+                
+                <div class="recon-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-sitemap"></i> Subdomain Enumeration</h3>
+                            <div class="loading-spinner hidden" id="subdomainSpinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                        <div class="card-body" id="subdomainResults">
+                            <div class="no-results">Click "Start Reconnaissance" to begin subdomain enumeration</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-network-wired"></i> Port Scanning</h3>
+                            <div class="loading-spinner hidden" id="portSpinner">
+                                <i class="fas fa-spinner fa-spin"></i>
+                            </div>
+                        </div>
+                        <div class="card-body" id="portResults">
+                            <div class="no-results">Port scanning will begin after subdomain enumeration</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cogs"></i> Technology Stack</h3>
+                        </div>
+                        <div class="card-body" id="techStack">
+                            <div class="no-results">Technology detection will run automatically</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-globe"></i> DNS Information</h3>
+                        </div>
+                        <div class="card-body" id="dnsInfo">
+                            <div class="no-results">DNS information will be gathered during reconnaissance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vulnerability Scanner Tab -->
+            <div class="tab-content" id="scanner">
+                <div class="scanner-header">
+                    <h2><i class="fas fa-shield-alt"></i> Vulnerability Scanner</h2>
+                    <div class="scanner-controls">
+                        <select class="form-control" id="scanType">
+                            <option value="full">Full OWASP Top 10 Scan</option>
+                            <option value="quick">Quick Security Scan</option>
+                            <option value="custom">Custom Vulnerability Patterns</option>
+                        </select>
+                        <button class="btn btn--primary" id="startVulnScan">
+                            <i class="fas fa-play"></i> Start Scan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scan-progress hidden" id="scanProgress">
+                    <div class="progress-header">
+                        <span>Scanning in progress...</span>
+                        <span id="scanProgressText">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="scanProgressBar" style="width: 0%"></div>
+                    </div>
+                    <div class="scan-status" id="scanStatus">Initializing scan...</div>
+                </div>
+
+                <div class="vulnerabilities-grid" id="vulnerabilitiesGrid">
+                    <div class="no-results">Run a vulnerability scan to see results</div>
+                </div>
+            </div>
+
+            <!-- Deep Analysis Tab -->
+            <div class="tab-content" id="analysis">
+                <div class="analysis-header">
+                    <h2><i class="fas fa-microscope"></i> Deep Analysis Engine</h2>
+                    <button class="btn btn--primary" id="startDeepAnalysis">
+                        <i class="fas fa-brain"></i> Start Deep Analysis
+                    </button>
+                </div>
+
+                <div class="analysis-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-code"></i> Business Logic Analysis</h3>
+                        </div>
+                        <div class="card-body" id="businessLogicResults">
+                            <div class="no-results">Business logic analysis pending</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-key"></i> Session Management</h3>
+                        </div>
+                        <div class="card-body" id="sessionResults">
+                            <div class="no-results">Session analysis pending</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-plug"></i> API Security Assessment</h3>
+                        </div>
+                        <div class="card-body" id="apiResults">
+                            <div class="no-results">API security assessment pending</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Error Handling</h3>
+                        </div>
+                        <div class="card-body" id="errorResults">
+                            <div class="no-results">Error handling analysis pending</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div class="tab-content" id="reports">
+                <div class="reports-header">
+                    <h2><i class="fas fa-file-alt"></i> Security Reports</h2>
+                    <div class="report-controls">
+                        <button class="btn btn--secondary" id="generateReport">
+                            <i class="fas fa-file-pdf"></i> Generate Report
+                        </button>
+                        <button class="btn btn--outline" id="exportFindings">
+                            <i class="fas fa-download"></i> Export Findings
+                        </button>
+                    </div>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="card report-summary">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Vulnerability Summary</h3>
+                        </div>
+                        <div class="card-body" id="vulnSummary">
+                            <div class="severity-stats">
+                                <div class="severity-item">
+                                    <div class="severity-color critical"></div>
+                                    <span>Critical: <strong id="criticalCount">0</strong></span>
+                                </div>
+                                <div class="severity-item">
+                                    <div class="severity-color high"></div>
+                                    <span>High: <strong id="highCount">0</strong></span>
+                                </div>
+                                <div class="severity-item">
+                                    <div class="severity-color medium"></div>
+                                    <span>Medium: <strong id="mediumCount">0</strong></span>
+                                </div>
+                                <div class="severity-item">
+                                    <div class="severity-color low"></div>
+                                    <span>Low: <strong id="lowCount">0</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card report-details">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list"></i> Detailed Findings</h3>
+                        </div>
+                        <div class="card-body" id="detailedFindings">
+                            <div class="no-results">No vulnerabilities found yet</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Methodology Tab -->
+            <div class="tab-content" id="methodology">
+                <div class="methodology-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Bug Bounty Methodology</h2>
+                </div>
+
+                <div class="methodology-phases" id="methodologyPhases">
+                    <!-- Methodology phases will be populated by JavaScript -->
+                </div>
+
+                <div class="notes-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-sticky-note"></i> Research Notes</h3>
+                        </div>
+                        <div class="card-body">
+                            <textarea class="form-control" id="researchNotes" rows="8" placeholder="Take notes during your security assessment..."></textarea>
+                            <button class="btn btn--secondary mt-8" id="saveNotes">
+                                <i class="fas fa-save"></i> Save Notes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Vulnerability Detail Modal -->
+    <div class="modal hidden" id="vulnModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="vulnModalTitle">Vulnerability Details</h3>
+                <button class="modal-close" id="closeVulnModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="vulnModalBody">
+                <!-- Content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
